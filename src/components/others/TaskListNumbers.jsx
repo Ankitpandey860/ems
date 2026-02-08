@@ -2,21 +2,33 @@ import React from 'react'
 
 const TaskListNumbers = () => {
   return (
-    <div className='  flex mt-10 justify-between gap-5 w-full'>
-      {/* span full viewport width with negative margins to cancel parent padding */}
-      <div className="
-            bg-[#f87171]
-            w-[380px]
-            h-[140px]
-            rounded-2xl
-            p-6
-            flex
-            flex-col
-            justify-center
-            ">
-            <h1 className="text-white text-3xl font-bold">0</h1>
-            <p className="text-white text-lg mt-2">New Task</p>
-        </div>
+    <div className="mt-10 flex flex-wrap gap-8">
+
+      <div className="bg-[#f87171] w-[260px] h-[140px] rounded-2xl p-6 flex flex-col justify-center shadow-md">
+        <h1 className="text-white text-3xl font-bold">0</h1>
+        <p className="text-white text-lg mt-2">New Task</p>
+      </div>
+
+      <div className="bg-[#34d399] w-[260px] h-[140px] rounded-2xl p-6 flex flex-col justify-center shadow-md">
+        <h1 className="text-white text-3xl font-bold">0</h1>
+        <p className="text-white text-lg mt-2">Completed</p>
+      </div>
+
+      <div className="bg-[#fbbf24] w-[260px] h-[140px] rounded-2xl p-6 flex flex-col justify-center shadow-md">
+        <h1 className="text-white text-3xl font-bold">0</h1>
+        <p className="text-white text-lg mt-2">Pending</p>
+      </div>
+
+      <div className="bg-[#60a5fa] w-[260px] h-[140px] rounded-2xl p-6 flex flex-col justify-center shadow-md">
+        <h1 className="text-white text-3xl font-bold">0</h1>
+        <p className="text-white text-lg mt-2">Accepted</p>
+      </div>
+
+      <div className="bg-[#a78bfa] w-[260px] h-[140px] rounded-2xl p-6 flex flex-col justify-center shadow-md">
+        <h1 className="text-white text-3xl font-bold">0</h1>
+        <p className="text-white text-lg mt-2">Failed</p>
+      </div>
+
     </div>
   )
 }
