@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 
 import Login from './components/auth/Login'
 import EmployeeDashboard from './components/dashboard/EmployeeDashboard'
+import AdminDashboard from './components/dashboard/AdminDashboard'
 import './index.css'
 
 function App() {
@@ -12,9 +13,10 @@ function App() {
   return (
     <>
       {/*<Login />*/}
-      <div className="bg-red-500 h-screen">
+      {/*<div className="bg-red-500 h-screen">
         <EmployeeDashboard />
-      </div>
+      </div>*/}
+      <AdminDashboard />
 
       
     </>
