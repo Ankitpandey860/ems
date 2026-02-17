@@ -1,57 +1,67 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from "react";
+import Login from "./components/auth/Login";
+import EmployeeDashboard from "./components/dashboard/EmployeeDashboard";
+import AdminDashboard from "./components/dashboard/AdminDashboard";
+import { AuthContext } from "./context/AuthProvider";
+import "./index.css";
 
-import Login from './components/auth/Login'
-import EmployeeDashboard from './components/dashboard/EmployeeDashboard'
-import AdminDashboard from './components/dashboard/AdminDashboard'
-import { setlocalstorage, getlocalstorage } from './utils/LocalStorage'
-import './index.css'
-import { useContext } from 'react'
-import { AuthContext } from './context/AuthProvider'
+const App = () => {
 
-function App() {
+  const [user, setUser] = useState(null);
+  const [loggedInUserData, setLoggedInUserData] = useState(null);
+  const authData = useContext(AuthContext);
 
-  const [user, setUser] = useState(null)
-
+  // 🔁 Check localStorage on reload
   useEffect(() => {
-    setlocalstorage()
-  }, [])
+    if (authData) {
+      const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+      if (loggedInUser) {
+        setUser(loggedInUser.role);
+      }
+    }
+  }, [authData]);
 
   const handleLogin = (email, password) => {
 
-    const { employeesData, adminData } = getlocalstorage()
-
-    // Employee check
-    const employee = employeesData.find(
-      (emp) => emp.email === email && emp.password === password
-    )
-
-    if (employee) {
-      setUser(employee)
-      return
+    // ✅ Admin check
+    if (email === "admin@company.com" && password === "123") {
+      setUser({role:'admin'});
+      localStorage.setItem(
+        "loggedInUser",
+        JSON.stringify({ role: "admin" })
+      );
     }
 
-    // Admin check (admin array hai)
-    const admin = adminData.find(
-      (adm) => adm.email === email && adm.password === password
-    )
-
-    if (admin) {
-      setUser(admin)
-      return
+    // ✅ Employee check
+    else if (authData ) {
+      const employee = authData.employees.find(
+                          (e) => e.email === email && e.password === password
+                        )
+      if (employee) {
+            setUser("employee");
+            setLoggedInUserData(employee)
+            localStorage.setItem(
+              "loggedInUser",
+              JSON.stringify({ role: "employee" })
+            );
+          }
     }
 
-    alert("Invalid credentials")
-  }
-  const data=useContext(AuthContext)
+    else {
+      alert("Invalid Credentials");
+    }
+  };
+ 
   return (
     <>
       {!user && <Login handleLogin={handleLogin} />}
 
-      {user && user.id !== 101 && <EmployeeDashboard />}
+      {user === "employee" && <EmployeeDashboard data={loggedInUserData}/>}
 
-      {user && user.id === 101 && <AdminDashboard />}
+      {user === "admin" && <AdminDashboard />}
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
