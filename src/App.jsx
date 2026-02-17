@@ -1,47 +1,57 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 
 import Login from './components/auth/Login'
 import EmployeeDashboard from './components/dashboard/EmployeeDashboard'
 import AdminDashboard from './components/dashboard/AdminDashboard'
+import { setlocalstorage, getlocalstorage } from './utils/LocalStorage'
 import './index.css'
-import AllTask from './components/others/AllTask'
-import { setlocalstorage } from './utils/LocalStorage'
+import { useContext } from 'react'
+import { AuthContext } from './context/AuthProvider'
 
 function App() {
-  const [user, setUsert] = useState(null)
-  const handleLogin=(email,password)=>{
-    const employeesData=JSON.parse(localStorage.getItem("employees"))
-    const adminData=JSON.parse(localStorage.getItem("admin"))
-    const user=employeesData.find(emp=>emp.email===email && emp.password===password)
-    if(user){
-      setUsert(user)
-    }
-    else if(adminData.email===email && adminData.password===password){
-      setUsert(adminData)
-    }
-  }
-  useEffect(()=>{
+
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
     setlocalstorage()
-  },[])
-  handleLogin()
+  }, [])
+
+  const handleLogin = (email, password) => {
+
+    const { employeesData, adminData } = getlocalstorage()
+
+    // Employee check
+    const employee = employeesData.find(
+      (emp) => emp.email === email && emp.password === password
+    )
+
+    if (employee) {
+      setUser(employee)
+      return
+    }
+
+    // Admin check (admin array hai)
+    const admin = adminData.find(
+      (adm) => adm.email === email && adm.password === password
+    )
+
+    if (admin) {
+      setUser(admin)
+      return
+    }
+
+    alert("Invalid credentials")
+  }
+  const data=useContext(AuthContext)
   return (
     <>
-      {!user ?<Login /> : ''}
-      {<Login />}
-      {/*<div className="bg-red-500 h-screen">
-        <EmployeeDashboard />
-      
-      
-      <AdminDashboard />
-      <AllTask />
-      </div>*/}
+      {!user && <Login handleLogin={handleLogin} />}
 
-      
+      {user && user.id !== 101 && <EmployeeDashboard />}
+
+      {user && user.id === 101 && <AdminDashboard />}
     </>
   )
 }
 
 export default App
-
