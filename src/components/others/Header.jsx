@@ -1,11 +1,15 @@
 import React from "react";
 
-const Header = () => {
+const Header = ({ data }) => {
+  if (!data) return null;
+
   return (
     <div className="flex justify-between items-start mb-10">
       <h1 className="text-white text-3xl font-semibold">
         Hello <br />
-        <span className="text-4xl font-bold">Dost 👋</span>
+        <span className="text-4xl font-bold">
+          {data.firstname} 👋
+        </span>
       </h1>
 
       <button className="bg-red-500 px-4 py-2 rounded-md text-white hover:bg-red-600 transition">
@@ -16,4 +20,3 @@ const Header = () => {
 };
 
 export default Header;
-
