@@ -23,14 +23,17 @@ useEffect(() => {
   setUserRole(storedUser.role);
 
   if (storedUser.role === "employee") {
-
     const employee = authData.employeesData.find(
       (e) => e.email === storedUser.email
     );
+    if (employee) setLoggedInUserData(employee);
+  }
 
-    if (employee) {
-      setLoggedInUserData(employee);
-    }
+  if (storedUser.role === "admin") {
+    const admin = authData.adminData.find(
+      (a) => a.email === storedUser.email
+    );
+    if (admin) setLoggedInUserData(admin);
   }
 
 }, [authData]);
@@ -42,7 +45,7 @@ useEffect(() => {
     if (!authData) return;
 
     const { employeesData, adminData } = authData;
-    console.log("authData:", authData)
+
     // ✅ Admin check
     const admin = adminData.find(
       (a) => a.email === email && a.password === password
@@ -50,9 +53,10 @@ useEffect(() => {
 
     if (admin) {
       setUserRole("admin");
+      setLoggedInUserData(admin);   // ✅ IMPORTANT FIX
       localStorage.setItem(
         "loggedInUser",
-        JSON.stringify({ role: "admin" })
+        JSON.stringify({ role: "admin", email: admin.email })
       );
       return;
     }
@@ -66,9 +70,9 @@ useEffect(() => {
       setUserRole("employee");
       setLoggedInUserData(employee);
       localStorage.setItem(
-      "loggedInUser",
-      JSON.stringify({ role: "employee", email: employee.email })
-    );
+        "loggedInUser",
+        JSON.stringify({ role: "employee", email: employee.email })
+      );
       return;
     }
 
@@ -83,7 +87,7 @@ useEffect(() => {
         <EmployeeDashboard data={loggedInUserData} />
       )}
 
-      {userRole === "admin" && <AdminDashboard />}
+      {userRole === "admin" && <AdminDashboard  data={loggedInUserData}/>}
     </>
   );
 };

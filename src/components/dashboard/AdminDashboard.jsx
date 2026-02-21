@@ -2,11 +2,11 @@ import React from 'react'
 import Header from '../others/Header'
 import AllTask from '../others/AllTask'
 
-const AdminDashboard = () => {
+const AdminDashboard = ({data}) => {
   return (
     <div className="min-h-screen w-full bg-[#1C1C1C] text-white px-12 py-8">
       
-      <Header />
+      <Header data={data} />
 
       {/* Form Section */}
       <div className="mt-8 bg-[#2A2A2A] p-8 rounded-2xl shadow-lg w-full">

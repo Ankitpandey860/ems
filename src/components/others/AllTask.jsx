@@ -1,69 +1,35 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from '../../context/AuthProvider';
 
 const AllTask = () => {
+
+  const authData = useContext(AuthContext);
+
+  if (!authData) return null;
+
   return (
-    <div className="bg-[#1c1c1c] p-6 rounded-xl mt-1/2">
+    <div className="bg-[#1c1c1c] p-6 rounded-xl mt-6 space-y-4">
 
-      {/* Title */}
-      <h2 className="text-white text-xl font-semibold mb-6">
-        All Tasks
-      </h2>
+      {authData.employeesData.map((elem) => {
 
-      {/* Task List Container */}
-      <div className="flex flex-col gap-4">
+        return (
+          <div
+            key={elem.id}
+            className="bg-green-500 py-3 px-5 flex justify-between items-center rounded-lg"
+          >
+            <h3 className="font-medium">{elem.firstname}</h3>
 
-        <div className="bg-red-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="text-white font-medium">Ankit Pandey</h3>
-          <p className="text-white">Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            Pending
-          </span>
-        </div>
+            <p>Total Tasks: {elem.tasks.length}</p>
 
-        <div className="bg-yellow-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="font-medium">Ankit Pandey</h3>
-          <p>Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            In Progress
-          </span>
-        </div>
-
-        <div className="bg-green-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="font-medium">Ankit Pandey</h3>
-          <p>Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            Completed
-          </span>
-        </div>
-
-        <div className="bg-purple-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="font-medium">Ankit Pandey</h3>
-          <p>Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            Review
-          </span>
-        </div>
-
-        <div className="bg-blue-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="font-medium">Ankit Pandey</h3>
-          <p>Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            Accepted
-          </span>
-        </div>
-
-        <div className="bg-gray-500 py-3 px-5 flex justify-between items-center rounded-lg">
-          <h3 className="font-medium">Ankit Pandey</h3>
-          <p>Make a UI Design</p>
-          <span className="text-sm bg-black px-3 py-1 rounded text-white">
-            Failed
-          </span>
-        </div>
-
-      </div>
+            <span className="text-sm bg-black px-3 py-1 rounded text-white">
+              Active: {elem.taskCounts.active}
+            </span>
+          </div>
+        );
+      })}
 
     </div>
-  )
-}
+  );
+};
 
-export default AllTask
+export default AllTask;
