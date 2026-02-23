@@ -3,7 +3,7 @@ import { AuthContext } from "../../context/AuthProvider";
 
 const CreateTask = () => {
 
-  const { userData, setUserData } = useContext(AuthContext);
+  const [userData, setUserData] = useContext(AuthContext);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -11,24 +11,25 @@ const CreateTask = () => {
   const [assignTo, setAssignTo] = useState("");
   const [category, setCategory] = useState("");
 
+  if (!userData) return null;
+
   const submitHandler = (e) => {
     e.preventDefault();
 
     const newTask = {
-      active: false,
-      newTask: true,
-      completed: false,
-      failed: false,
       taskTitle: title,
       taskDescription: description,
       taskDate: date,
-      category: category
+      category: category,
+      active: false,
+      newTask: true,
+      completed: false,
+      failed: false
     };
 
-    const updatedEmployees = userData.employeesData.map((emp) => {
+    const updatedEmployees = userData.employees.map((emp) => {
 
-      if (emp.firstname.toLowerCase() === assignTo.toLowerCase()) {
-
+      if (emp.firstname === assignTo) {
         return {
           ...emp,
           tasks: [...emp.tasks, newTask],
@@ -44,22 +45,19 @@ const CreateTask = () => {
 
     const updatedData = {
       ...userData,
-      employeesData: updatedEmployees
+      employees: updatedEmployees
     };
 
     setUserData(updatedData);
-
     localStorage.setItem("employees", JSON.stringify(updatedEmployees));
 
-    // clear form
+    // reset form
     setTitle("");
     setDescription("");
     setDate("");
     setAssignTo("");
     setCategory("");
   };
-
-  if (!userData) return null;
 
   return (
     <div className="mt-8 bg-[#2A2A2A] p-8 rounded-2xl shadow-lg w-full">
